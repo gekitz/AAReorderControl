@@ -1,10 +1,26 @@
 //
-//  ReorderContentView.h
-//  Test
+//    AAReorderContentView.h
+//    
+//    Created by Georg Kitz 20.01.2012
+//    Copyright (C) 2012, Georg Kitz, @gekitz, http://www.aurora-apps.com , All rights reserved.
 //
-//  Created by Georg Kitz on 12/5/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//    Permission is hereby granted, free of charge, to any person obtaining a copy of
+//    this software and associated documentation files (the "Software"), to deal in
+//    the Software without restriction, including without limitation the rights to
+//    use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+//    of the Software, and to permit persons to whom the Software is furnished to do
+//    so, subject to the following conditions:
 //
+//    The above copyright notice and this permission notice shall be included in all
+//    copies or substantial portions of the Software.
+//
+//    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//    SOFTWARE.
 
 #import <UIKit/UIKit.h>
 
@@ -36,8 +52,7 @@ typedef void(^AAReorderDrawRect)(CGRect);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
  @class       ReorderContentView
- @abstract  
- @discussion
+ @abstract    This view is used for the whole reorder stuff.
  */
 @interface AAReorderContentView : UIView {
     
@@ -75,8 +90,12 @@ typedef void(^AAReorderDrawRect)(CGRect);
     AAReorderDrawRect _drawRect;
 }
 
+/** display title of the reorderview */
 @property (nonatomic, strong) NSString *title;
+
 @property (nonatomic, weak) id<ReorderDelegate> reorderDelegate;
+
+/** to override the current drawRect just set this block */
 @property (nonatomic, strong) AAReorderDrawRect drawRect;
 
 - (void)highlightDragOver:(BOOL)highlight animated:(BOOL)animated;  //TODO implement it animated
@@ -84,17 +103,29 @@ typedef void(^AAReorderDrawRect)(CGRect);
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated;         //TODO implement it animated
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;           
 
-
 @end
 
 @protocol ReorderDelegate <NSObject>
 
+/** allows reoder for a certain reoderview or not. Is called in touchesBegan: 
+ @return YES/NO wether reordering is allowed or not, default is YES
+ */
 - (BOOL)willBeginReorderingForView:(AAReorderContentView *)view;
+
+/** called as soon at the end of touchesBegan, right before touchesMove get called */
 - (void)didBeginReorderingForView:(AAReorderContentView *)view;
 
+/** called at the begin of touches end, when a user removes his finger from the reorder control. 
+    You can check in this method wether it is allowed to set the contentview to the destination cell or not
+    @return YES when it is allowed or NO.
+ */
 - (BOOL)willEndReorideringForView:(AAReorderContentView *)view
                     fromIndexPath:(NSIndexPath *)fromIndexPath inTable:(UITableView *)fromTableView 
                       toIndexPath:(NSIndexPath *)toIndexPath inTable:(UITableView *)toTableView;
+
+/** called when the reorderview is set to the new reordercell
+ * you should update your datasource as soon as this method gets called.
+ */
 - (void)didEndReorderingForView:(AAReorderContentView *)view 
                   fromIndexPath:(NSIndexPath *)fromIndexPath inTable:(UITableView *)fromTableView 
                     toIndexPath:(NSIndexPath *)toIndexPath inTable:(UITableView *)toTableView;

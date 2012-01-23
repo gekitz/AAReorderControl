@@ -1,10 +1,26 @@
 //
-//  DayCell.m
-//  TrainingDay
+//    AAReorderCell.m
+//    
+//    Created by Georg Kitz 20.01.2012
+//    Copyright (C) 2012, Georg Kitz, @gekitz, http://www.aurora-apps.com , All rights reserved.
 //
-//  Created by Georg Kitz on 11/7/11.
-//  Copyright 2011 Spartan Technologies UG. All rights reserved.
+//    Permission is hereby granted, free of charge, to any person obtaining a copy of
+//    this software and associated documentation files (the "Software"), to deal in
+//    the Software without restriction, including without limitation the rights to
+//    use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+//    of the Software, and to permit persons to whom the Software is furnished to do
+//    so, subject to the following conditions:
 //
+//    The above copyright notice and this permission notice shall be included in all
+//    copies or substantial portions of the Software.
+//
+//    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//    SOFTWARE.
 
 #import "AAReorderCell.h"
 
@@ -56,8 +72,10 @@
         // Initialization code
         
         _oldState = UITableViewCellStateDefaultMask;
-                
-        _reorderView = [[AAReorderContentView alloc] initWithFrame:CGRectMake(150, 0, 150, 44)]; // 60 to 
+               
+        CGRect reorderRect = [self reorderRect];
+        reorderRect.origin.x += 32; //left inset of the tableview is 32px when the cell is in editmode
+        _reorderView = [[AAReorderContentView alloc] initWithFrame:reorderRect];  
         [self.contentView addSubview:_reorderView];
     }
     return self;
@@ -99,14 +117,14 @@
     
     if (editing) {
         CGRect frame = _reorderView.frame;
-        frame.origin.x = 118; // FUCKIN TABLEVIEW ANIMATES 32PX
+        frame.origin.x = [self reorderRect].origin.x; // FUCKIN TABLEVIEW ANIMATES 32PX
         
         [UIView animateWithDuration:0.3 animations:^{
             _reorderView.frame = frame; 
         }];
     } else {
         CGRect frame = _reorderView.frame;
-        frame.origin.x = 150;
+        frame.origin.x = [self reorderRect].origin.x + 32;
         
         [UIView animateWithDuration:0.3 animations:^{
             _reorderView.frame = frame; 
@@ -135,8 +153,7 @@
 #pragma mark Memory Management
 
 - (void)prepareForReuse {
-	[super prepareForReuse];
-	
+	[super prepareForReuse];	
 }
 
 @end
