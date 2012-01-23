@@ -5,19 +5,37 @@ AAReorderContentView gives you the possibility to drag&drop a view between diffe
 ## Important Facts
 -------
 - Both UITableViews **must** have the same superview.
-- Both UITableViews must be visibile with its complete content (scrolling inside a Tableview will dragging is not support at the moment).
+- Both UITableViews must be visible with its complete content (scrolling inside a Tableview while dragging is not support at the moment).
 
 ## Setup
 -------
 - Drag&Drop the AAReorderContentView folder into your project.
-- Use AAReorderCell or a derived class of AAReorderCell in as cell in your UITableView.
+- Use AAReorderCell or a derived class of AAReorderCell as cell in your UITableView.
+
+## Customization
+--------
+You can set the following colors of the reorder view:
+``` objective-c
+UIColor *titleColor;
+UIColor *titleHighlightedColor;
+UIColor *draggingPlaceholderColor; 
+UIColor *draggingHighlightedColor; 
+UIColor *draggingHighlightedBorderColor; 
+```
+
+or you apply a ``` objective-c AAReorderDrawRect drawRect ``` block to your reorder view to apply custom drawing.
 
 ## Work In Progress
 -------
 Right now I'm working on scrolling support for the TableViews while you are dragging the AAReorderContentView.
 
-# License & Author
+# Author
 -------
-This source code is under <license>. For details check the license file.
+Georg Kitz
+You can follow me on Twitter [@gekitz](http://www.twitter.com/gekitz).
 
-You can follow me on Twitter @gekitz.
+# License 
+-------
+This source code is available under MIT license. For details check the license file.
+
+
