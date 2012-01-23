@@ -48,6 +48,9 @@ typedef enum {
 - (UIView *)tableSuperview;
 
 - (void)drawRectHighlightWithCornerType:(AAReorderCellCornerType)cornerType;
+
+- (void)startAutoScrolling;
+- (void)stopAutoScrolling;
 @end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,6 +197,56 @@ typedef enum {
     [self.superview insertSubview:placeholderView belowSubview:self];
     
     _startPlaceholderView = placeholderView;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark AutoScrolling Methods 
+
+//- (void)autoscroll:(NSTimer *)timer{
+//    
+//    if (!_flags.shouldAutoScroll || _flags.isAnimating) {
+//        return;
+//    }
+//    
+//    CGPoint point = _scrollView.contentOffset;
+//    point.x += (_autoScrollValue * 320);
+//    
+//    if (point.x + CGRectGetWidth(_scrollView.frame) > _scrollView.contentSize.width || point.x < 0) {
+//        _flags.shouldAutoScroll = NO;
+//        return;
+//    }
+//    
+//    _flags.isAnimating = YES;
+//    _flags.shouldAutoScroll = NO;
+//    
+//    [UIView animateWithDuration:0.25 animations:^{
+//        [_scrollView setContentOffset:point animated:NO];
+//    } completion:^(BOOL finished) {
+//        _flags.isAnimating = NO;
+//    }];
+//    
+//    [self findTableViewAtPoint:CGPointMake(point.x, 160) inView:_scrollView];
+//    [self findCurrentAtPoint:self.center];
+//}
+
+
+- (void)internalShouldAutoScroll{
+    if (!_flags.shouldAutoScroll){
+        return;
+    }
+    
+    [_lastTableView setContentOffset:CGPointMake(0,_lastTableView.contentOffset.y + 1) animated:YES];
+    [self performSelectorOnMainThread:@selector(internalShouldAutoScroll) withObject:nil waitUntilDone:NO];
+}
+
+- (void)startAutoScrolling{
+    _flags.shouldAutoScroll = YES;
+    [self performSelectorOnMainThread:@selector(internalShouldAutoScroll) withObject:nil waitUntilDone:NO];
+}
+
+- (void)stopAutoScrolling{
+    _flags.shouldAutoScroll = NO;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -453,6 +506,16 @@ typedef enum {
         
         point = [[touches anyObject] locationInView:_lastTableView];
         [self updateCurrentCellAtPoint:point];
+        
+        CGRect autoScrollingRect = CGRectMake(CGRectGetMinX(_lastTableView.frame), CGRectGetMaxY(_lastTableView.frame) - _lastTableView.rowHeight, CGRectGetWidth(_lastTableView.frame), _lastTableView.rowHeight);
+        
+
+        if (CGRectIntersectsRect(self.frame, autoScrollingRect) && !_flags.shouldAutoScroll) {
+            SMLog(@"INTERSECT");
+            [self startAutoScrolling];
+        } else if(!CGRectIntersectsRect(self.frame, autoScrollingRect) && _flags.shouldAutoScroll){
+            [self stopAutoScrolling];
+        }
     } 
 }
 
