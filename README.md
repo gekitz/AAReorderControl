@@ -2,6 +2,7 @@
 
 AAReorderContentView gives you the possibility to drag&drop a view between different UITableViews. Just add AAReorderCell as cell in your UITableView.
 
+Demo video available under (http://vimeo.com/35507673)[http://vimeo.com/35507673].
 ## Important Facts
 
 - Both UITableViews **must** have the same superview.
