@@ -1,0 +1,360 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C122534614CAF9C800869FA2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C122534514CAF9C800869FA2 /* UIKit.framework */; };
+		C122534814CAF9C800869FA2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C122534714CAF9C800869FA2 /* Foundation.framework */; };
+		C122534A14CAF9C800869FA2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C122534914CAF9C800869FA2 /* CoreGraphics.framework */; };
+		C122535014CAF9C800869FA2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C122534E14CAF9C800869FA2 /* InfoPlist.strings */; };
+		C122535214CAF9C800869FA2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C122535114CAF9C800869FA2 /* main.m */; };
+		C122535614CAF9C800869FA2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C122535514CAF9C800869FA2 /* AppDelegate.m */; };
+		C122535914CAF9C800869FA2 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C122535814CAF9C800869FA2 /* FirstViewController.m */; };
+		C122535B14CAF9C800869FA2 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = C122535A14CAF9C800869FA2 /* first.png */; };
+		C122535D14CAF9C800869FA2 /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C122535C14CAF9C800869FA2 /* first@2x.png */; };
+		C122536014CAF9C800869FA2 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C122535F14CAF9C800869FA2 /* SecondViewController.m */; };
+		C122536214CAF9C800869FA2 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = C122536114CAF9C800869FA2 /* second.png */; };
+		C122536414CAF9C800869FA2 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C122536314CAF9C800869FA2 /* second@2x.png */; };
+		C122536714CAF9C800869FA2 /* FirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C122536514CAF9C800869FA2 /* FirstViewController.xib */; };
+		C122536A14CAF9C800869FA2 /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C122536814CAF9C800869FA2 /* SecondViewController.xib */; };
+		C122537314CAFA1C00869FA2 /* AAReorderContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = C122537214CAFA1C00869FA2 /* AAReorderContentView.m */; };
+		C122537614CAFB3100869FA2 /* AAPlaceholderReorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C122537514CAFB3100869FA2 /* AAPlaceholderReorderView.m */; };
+		C122537914CAFC4E00869FA2 /* AAReorderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C122537814CAFC4E00869FA2 /* AAReorderCell.m */; };
+		C122537D14CB074E00869FA2 /* reorder_handle.png in Resources */ = {isa = PBXBuildFile; fileRef = C122537B14CB074E00869FA2 /* reorder_handle.png */; };
+		C122537E14CB074E00869FA2 /* reorder_handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C122537C14CB074E00869FA2 /* reorder_handle@2x.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C122534114CAF9C800869FA2 /* AAReorderSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AAReorderSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C122534514CAF9C800869FA2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C122534714CAF9C800869FA2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C122534914CAF9C800869FA2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C122534D14CAF9C800869FA2 /* AAReorderSample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AAReorderSample-Info.plist"; sourceTree = "<group>"; };
+		C122534F14CAF9C800869FA2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C122535114CAF9C800869FA2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C122535314CAF9C800869FA2 /* AAReorderSample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AAReorderSample-Prefix.pch"; sourceTree = "<group>"; };
+		C122535414CAF9C800869FA2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C122535514CAF9C800869FA2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C122535714CAF9C800869FA2 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
+		C122535814CAF9C800869FA2 /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
+		C122535A14CAF9C800869FA2 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
+		C122535C14CAF9C800869FA2 /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
+		C122535E14CAF9C800869FA2 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
+		C122535F14CAF9C800869FA2 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		C122536114CAF9C800869FA2 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
+		C122536314CAF9C800869FA2 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
+		C122536614CAF9C800869FA2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FirstViewController.xib; sourceTree = "<group>"; };
+		C122536914CAF9C800869FA2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SecondViewController.xib; sourceTree = "<group>"; };
+		C122537114CAFA1C00869FA2 /* AAReorderContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; name = AAReorderContentView.h; path = AAReorderContentViewClasses/AAReorderContentView.h; sourceTree = "<group>"; };
+		C122537214CAFA1C00869FA2 /* AAReorderContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; name = AAReorderContentView.m; path = AAReorderContentViewClasses/AAReorderContentView.m; sourceTree = "<group>"; };
+		C122537414CAFB3100869FA2 /* AAPlaceholderReorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; name = AAPlaceholderReorderView.h; path = AAReorderContentViewClasses/AAPlaceholderReorderView.h; sourceTree = "<group>"; };
+		C122537514CAFB3100869FA2 /* AAPlaceholderReorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; name = AAPlaceholderReorderView.m; path = AAReorderContentViewClasses/AAPlaceholderReorderView.m; sourceTree = "<group>"; };
+		C122537714CAFC4E00869FA2 /* AAReorderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AAReorderCell.h; path = AAReorderContentViewClasses/AAReorderCell.h; sourceTree = "<group>"; };
+		C122537814CAFC4E00869FA2 /* AAReorderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; name = AAReorderCell.m; path = AAReorderContentViewClasses/AAReorderCell.m; sourceTree = "<group>"; };
+		C122537B14CB074E00869FA2 /* reorder_handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = reorder_handle.png; path = AAReorderContentViewClasses/Images/reorder_handle.png; sourceTree = "<group>"; };
+		C122537C14CB074E00869FA2 /* reorder_handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reorder_handle@2x.png"; path = "AAReorderContentViewClasses/Images/reorder_handle@2x.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C122533E14CAF9C800869FA2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C122534614CAF9C800869FA2 /* UIKit.framework in Frameworks */,
+				C122534814CAF9C800869FA2 /* Foundation.framework in Frameworks */,
+				C122534A14CAF9C800869FA2 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C122533614CAF9C800869FA2 = {
+			isa = PBXGroup;
+			children = (
+				C122537014CAF9E000869FA2 /* AAReorderContentViewClasses */,
+				C122534B14CAF9C800869FA2 /* AAReorderSample */,
+				C122534414CAF9C800869FA2 /* Frameworks */,
+				C122534214CAF9C800869FA2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C122534214CAF9C800869FA2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C122534114CAF9C800869FA2 /* AAReorderSample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C122534414CAF9C800869FA2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C122534514CAF9C800869FA2 /* UIKit.framework */,
+				C122534714CAF9C800869FA2 /* Foundation.framework */,
+				C122534914CAF9C800869FA2 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C122534B14CAF9C800869FA2 /* AAReorderSample */ = {
+			isa = PBXGroup;
+			children = (
+				C122535414CAF9C800869FA2 /* AppDelegate.h */,
+				C122535514CAF9C800869FA2 /* AppDelegate.m */,
+				C122535714CAF9C800869FA2 /* FirstViewController.h */,
+				C122535814CAF9C800869FA2 /* FirstViewController.m */,
+				C122535A14CAF9C800869FA2 /* first.png */,
+				C122535C14CAF9C800869FA2 /* first@2x.png */,
+				C122535E14CAF9C800869FA2 /* SecondViewController.h */,
+				C122535F14CAF9C800869FA2 /* SecondViewController.m */,
+				C122536114CAF9C800869FA2 /* second.png */,
+				C122536314CAF9C800869FA2 /* second@2x.png */,
+				C122536514CAF9C800869FA2 /* FirstViewController.xib */,
+				C122536814CAF9C800869FA2 /* SecondViewController.xib */,
+				C122534C14CAF9C800869FA2 /* Supporting Files */,
+			);
+			path = AAReorderSample;
+			sourceTree = "<group>";
+		};
+		C122534C14CAF9C800869FA2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C122534D14CAF9C800869FA2 /* AAReorderSample-Info.plist */,
+				C122534E14CAF9C800869FA2 /* InfoPlist.strings */,
+				C122535114CAF9C800869FA2 /* main.m */,
+				C122535314CAF9C800869FA2 /* AAReorderSample-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C122537014CAF9E000869FA2 /* AAReorderContentViewClasses */ = {
+			isa = PBXGroup;
+			children = (
+				C122537A14CB073600869FA2 /* Images */,
+				C122537714CAFC4E00869FA2 /* AAReorderCell.h */,
+				C122537814CAFC4E00869FA2 /* AAReorderCell.m */,
+				C122537414CAFB3100869FA2 /* AAPlaceholderReorderView.h */,
+				C122537514CAFB3100869FA2 /* AAPlaceholderReorderView.m */,
+				C122537114CAFA1C00869FA2 /* AAReorderContentView.h */,
+				C122537214CAFA1C00869FA2 /* AAReorderContentView.m */,
+			);
+			name = AAReorderContentViewClasses;
+			sourceTree = "<group>";
+		};
+		C122537A14CB073600869FA2 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				C122537B14CB074E00869FA2 /* reorder_handle.png */,
+				C122537C14CB074E00869FA2 /* reorder_handle@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C122534014CAF9C800869FA2 /* AAReorderSample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C122536D14CAF9C800869FA2 /* Build configuration list for PBXNativeTarget "AAReorderSample" */;
+			buildPhases = (
+				C122533D14CAF9C800869FA2 /* Sources */,
+				C122533E14CAF9C800869FA2 /* Frameworks */,
+				C122533F14CAF9C800869FA2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AAReorderSample;
+			productName = AAReorderSample;
+			productReference = C122534114CAF9C800869FA2 /* AAReorderSample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C122533814CAF9C800869FA2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = C122533B14CAF9C800869FA2 /* Build configuration list for PBXProject "AAReorderSample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C122533614CAF9C800869FA2;
+			productRefGroup = C122534214CAF9C800869FA2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C122534014CAF9C800869FA2 /* AAReorderSample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C122533F14CAF9C800869FA2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C122535014CAF9C800869FA2 /* InfoPlist.strings in Resources */,
+				C122535B14CAF9C800869FA2 /* first.png in Resources */,
+				C122535D14CAF9C800869FA2 /* first@2x.png in Resources */,
+				C122536214CAF9C800869FA2 /* second.png in Resources */,
+				C122536414CAF9C800869FA2 /* second@2x.png in Resources */,
+				C122536714CAF9C800869FA2 /* FirstViewController.xib in Resources */,
+				C122536A14CAF9C800869FA2 /* SecondViewController.xib in Resources */,
+				C122537D14CB074E00869FA2 /* reorder_handle.png in Resources */,
+				C122537E14CB074E00869FA2 /* reorder_handle@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C122533D14CAF9C800869FA2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C122535214CAF9C800869FA2 /* main.m in Sources */,
+				C122535614CAF9C800869FA2 /* AppDelegate.m in Sources */,
+				C122535914CAF9C800869FA2 /* FirstViewController.m in Sources */,
+				C122536014CAF9C800869FA2 /* SecondViewController.m in Sources */,
+				C122537314CAFA1C00869FA2 /* AAReorderContentView.m in Sources */,
+				C122537614CAFB3100869FA2 /* AAPlaceholderReorderView.m in Sources */,
+				C122537914CAFC4E00869FA2 /* AAReorderCell.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C122534E14CAF9C800869FA2 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C122534F14CAF9C800869FA2 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C122536514CAF9C800869FA2 /* FirstViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C122536614CAF9C800869FA2 /* en */,
+			);
+			name = FirstViewController.xib;
+			sourceTree = "<group>";
+		};
+		C122536814CAF9C800869FA2 /* SecondViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C122536914CAF9C800869FA2 /* en */,
+			);
+			name = SecondViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C122536B14CAF9C800869FA2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		C122536C14CAF9C800869FA2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C122536E14CAF9C800869FA2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AAReorderSample/AAReorderSample-Prefix.pch";
+				INFOPLIST_FILE = "AAReorderSample/AAReorderSample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C122536F14CAF9C800869FA2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AAReorderSample/AAReorderSample-Prefix.pch";
+				INFOPLIST_FILE = "AAReorderSample/AAReorderSample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C122533B14CAF9C800869FA2 /* Build configuration list for PBXProject "AAReorderSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C122536B14CAF9C800869FA2 /* Debug */,
+				C122536C14CAF9C800869FA2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C122536D14CAF9C800869FA2 /* Build configuration list for PBXNativeTarget "AAReorderSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C122536E14CAF9C800869FA2 /* Debug */,
+				C122536F14CAF9C800869FA2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C122533814CAF9C800869FA2 /* Project object */;
+}
