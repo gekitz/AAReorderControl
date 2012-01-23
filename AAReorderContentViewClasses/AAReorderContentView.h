@@ -85,9 +85,17 @@ typedef void(^AAReorderDrawRect)(CGRect);
         unsigned int isAnimating:1;
     }_flags;
     
+    //Properties
     NSString *_title;
     __weak id<ReorderDelegate> _delegate;
     AAReorderDrawRect _drawRect;
+    
+    //Style
+    UIColor *_titleColor;
+    UIColor *_titleHighlightedColor;
+    UIColor *_draggingPlaceholderColor;
+    UIColor *_draggingHighlightedColor;
+    UIColor *_draggingHighlightedBorderColor;
 }
 
 /** display title of the reorderview */
@@ -97,6 +105,13 @@ typedef void(^AAReorderDrawRect)(CGRect);
 
 /** to override the current drawRect just set this block */
 @property (nonatomic, strong) AAReorderDrawRect drawRect;
+
+/** Style properties */
+@property (nonatomic, strong) UIColor *titleColor;
+@property (nonatomic, strong) UIColor *titleHighlightedColor;
+@property (nonatomic, strong) UIColor *draggingPlaceholderColor; 
+@property (nonatomic, strong) UIColor *draggingHighlightedColor; 
+@property (nonatomic, strong) UIColor *draggingHighlightedBorderColor; 
 
 - (void)highlightDragOver:(BOOL)highlight animated:(BOOL)animated;  //TODO implement it animated
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;   //TODO implement it animated

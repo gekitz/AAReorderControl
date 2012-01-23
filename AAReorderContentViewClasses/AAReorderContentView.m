@@ -26,6 +26,16 @@
 #import "AAPlaceholderReorderView.h"
 #import "AAReorderCell.h"
 
+typedef enum {
+    AAReorderCellCornerTypeNone = 0,
+    AAReorderCellCornerTypeLeftTop = 1,
+    AAReorderCellCornerTypeRightTop = 2,
+    AAReorderCellCornerTypeRightBottom = 4,
+    AAReorderCellCornerTypeLeftBottom = 8,
+    AAReorderCellConrerTypeRoundRect = (AAReorderCellCornerTypeLeftTop | AAReorderCellCornerTypeRightTop | 
+                                        AAReorderCellCornerTypeRightBottom | AAReorderCellCornerTypeLeftBottom)
+}AAReorderCellCornerType;
+
 @interface AAReorderContentView()
 
 - (BOOL)delegateWillBeginEditing;
@@ -37,6 +47,7 @@
 - (void)updateCurrentTableViewAtPoint:(CGPoint)point inView:(UIView *)view;
 - (UIView *)tableSuperview;
 
+- (void)drawRectHighlightWithCornerType:(AAReorderCellCornerType)cornerType;
 @end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +61,12 @@
 @synthesize title = _title;
 @synthesize reorderDelegate = _delegate;
 @synthesize drawRect = _drawRect;
+
+@synthesize titleColor = _titleColor;
+@synthesize titleHighlightedColor = _titleHighlightedColor;
+@synthesize draggingHighlightedColor = _draggingHighlightedColor;
+@synthesize draggingPlaceholderColor = _draggingPlaceholderColor;
+@synthesize draggingHighlightedBorderColor = _draggingHighlightedBorderColor;
 
 - (void)setTitle:(NSString *)title{
     _title = title;
@@ -169,6 +186,7 @@
 - (void)setupPlaceholderView{
     AAPlaceholderReorderView *placeholderView = [[AAPlaceholderReorderView alloc] initWithFrame:self.frame];
     placeholderView.title = self.title;
+    placeholderView.color = _draggingPlaceholderColor;
     [self.superview insertSubview:placeholderView belowSubview:self];
     
     _startPlaceholderView = placeholderView;
@@ -219,6 +237,12 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(draggingBeganNotification) name:kDraggingBeganNotifivation object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(draggingEndNotification) name:kDraggingEndNotification object:nil];
+        
+        self.titleColor = [UIColor blackColor];
+        self.titleHighlightedColor = [UIColor whiteColor];
+        self.draggingHighlightedColor = [UIColor colorWithRed:204/255. green:151/255. blue:90/255. alpha:0.3]; 
+        self.draggingHighlightedBorderColor = [UIColor colorWithRed:204/255. green:151/255. blue:90/255. alpha:1.]; 
+        self.draggingPlaceholderColor = [UIColor colorWithRed:204/255. green:151/255. blue:90/255. alpha:0.4];
     }
     return self;
 }
@@ -292,7 +316,48 @@
 }
 */
 
+- (void)drawRectHighlightWithCornerType:(AAReorderCellCornerType)cornerType{
 
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextSetStrokeColorWithColor(ctx, _draggingHighlightedBorderColor.CGColor);
+    CGContextSetFillColorWithColor(ctx, _draggingHighlightedColor.CGColor);
+    
+    CGRect drawingRect = CGRectInset(self.bounds, 2, 2);
+    
+    if (cornerType == AAReorderCellCornerTypeNone) {
+        CGContextStrokeRect(ctx, drawingRect);
+        CGContextFillRect(ctx, drawingRect);
+        return;
+    }
+    
+    CGContextBeginPath(ctx);
+    
+    CGFloat minX = CGRectGetMinX(drawingRect);
+    CGFloat midX = CGRectGetMidX(drawingRect);
+    CGFloat maxX = CGRectGetMaxX(drawingRect);
+    
+    CGFloat minY = CGRectGetMinY(drawingRect);
+    CGFloat midY = CGRectGetMidY(drawingRect);
+    CGFloat maxY = CGRectGetMaxY(drawingRect);
+    CGFloat radius = 10.;
+    CGFloat r = 0;
+    
+    CGContextMoveToPoint(ctx, minX, midY);
+    r = (cornerType & AAReorderCellCornerTypeLeftTop ? radius : 0); // TOP LEFT
+    CGContextAddArcToPoint(ctx, minX, minY, midX, minY, r);
+    
+    r = (cornerType & AAReorderCellCornerTypeRightTop ? radius : 0); //TOP RIGHT
+    CGContextAddArcToPoint(ctx, maxX, minY, maxX, midY, r);
+    
+    r = (cornerType & AAReorderCellCornerTypeRightBottom ? radius : 0); //BOTTOM RIGHT
+    CGContextAddArcToPoint(ctx, maxX, maxY, midX, maxY, r);
+    
+    r = (cornerType & AAReorderCellCornerTypeLeftBottom ? radius : 0); // BOTTOM LEFT
+    CGContextAddArcToPoint(ctx, minX, maxY, minX, midY, r);
+    
+    CGContextClosePath(ctx);
+    CGContextDrawPath(ctx, kCGPathFillStroke);
+}
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -310,66 +375,21 @@
         }
         
         NSIndexPath *indexPath = [_startTableView indexPathForCell:_startCell];
+        NSInteger numberOfRows = [_startTableView numberOfRowsInSection:0];
+        AAReorderCellCornerType cornerType = AAReorderCellCornerTypeNone;
+        if ( indexPath.row == 0 && indexPath.row == numberOfRows - 1 ) {
+            cornerType = AAReorderCellCornerTypeRightTop | AAReorderCellCornerTypeRightBottom;
+        } else if ( indexPath.row == 0 ){
+            cornerType = AAReorderCellCornerTypeRightTop;
+        } else if ( indexPath.row == numberOfRows - 1){
+            cornerType = AAReorderCellCornerTypeRightBottom;
+        }
         
         SMLog(@"IndexPath %@",indexPath);
-        if (indexPath.row != 0 && indexPath.row != 6) {
-            CGContextRef ctx = UIGraphicsGetCurrentContext();
-            CGContextSetRGBStrokeColor(ctx, 204/255., 151/255., 90/255., 1);
-            CGContextSetRGBFillColor(ctx, 204/255., 151/255., 90/255., 0.3);
-            CGRect drawingRect = CGRectMake(1, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
-            CGContextFillRect(ctx, drawingRect);
-        } else if (indexPath.row == 0){
-            CGContextRef ctx = UIGraphicsGetCurrentContext();
-            CGContextSetRGBStrokeColor(ctx, 204/255., 151/255., 90/255., 1);
-            CGContextSetRGBFillColor(ctx, 204/255., 151/255., 90/255., 0.3);
-            CGContextBeginPath(ctx);
-            
-            CGRect drawingRect = CGRectMake(1, 0, CGRectGetWidth(self.bounds) - 1, CGRectGetHeight(self.bounds));
-            CGFloat minX = CGRectGetMinX(drawingRect);
-//            CGFloat midX = CGRectGetMidX(drawingRect);
-            CGFloat maxX = CGRectGetMaxX(drawingRect);
-            
-            CGFloat minY = CGRectGetMinY(drawingRect);
-//            CGFloat midY = CGRectGetMidY(drawingRect);
-            CGFloat maxY = CGRectGetMaxY(drawingRect);
-            CGFloat r = 5.;
-            
-            CGContextMoveToPoint(ctx, minX, minY);
-            CGContextAddLineToPoint(ctx, maxX - r, minY);
-            CGContextAddArcToPoint(ctx, maxX, minY, maxX, minY + r, r);
-            CGContextAddLineToPoint(ctx, maxX, maxY);
-            CGContextAddLineToPoint(ctx, minY, maxX);
-            
-            CGContextClosePath(ctx);
-            CGContextDrawPath(ctx, kCGPathFill);
-        } else if (indexPath.row == 6){
-            CGContextRef ctx = UIGraphicsGetCurrentContext();
-            CGContextSetRGBStrokeColor(ctx, 204/255., 151/255., 90/255., 1);
-            CGContextSetRGBFillColor(ctx, 204/255., 151/255., 90/255., 0.3);
-            CGContextBeginPath(ctx);
-            
-            CGRect drawingRect = CGRectMake(1, 0, CGRectGetWidth(self.bounds) - 1, CGRectGetHeight(self.bounds) - 3);
-            CGFloat minX = CGRectGetMinX(drawingRect);
-//            CGFloat midX = CGRectGetMidX(drawingRect);
-            CGFloat maxX = CGRectGetMaxX(drawingRect);
-            
-            CGFloat minY = CGRectGetMinY(drawingRect);
-//            CGFloat midY = CGRectGetMidY(drawingRect);
-            CGFloat maxY = CGRectGetMaxY(drawingRect);
-            CGFloat r = 5.;
-            
-            CGContextMoveToPoint(ctx, minX, minY);
-            CGContextAddLineToPoint(ctx, maxX, minY);
-            CGContextAddLineToPoint(ctx, maxX, maxY - r);
-            CGContextAddArcToPoint(ctx, maxX, maxY, maxX - r, maxY, r);
-            CGContextAddLineToPoint(ctx, minX, maxY);
-            
-            CGContextClosePath(ctx);
-            CGContextDrawPath(ctx, kCGPathFill); 
-        }  
+        [self drawRectHighlightWithCornerType:cornerType];
     }
     
-    (_flags.selected || _flags.highlighted) ? [[UIColor whiteColor] set] : [[UIColor blackColor] set];
+    (_flags.selected || _flags.highlighted) ? [_titleHighlightedColor set] : [_titleColor set];
     [_title drawInRect:CGRectMake(0, CGRectGetHeight(self.frame) / 2 - 11, CGRectGetWidth(self.frame) - 34, 22) withFont:[UIFont systemFontOfSize:17] lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentRight];
 }
 
