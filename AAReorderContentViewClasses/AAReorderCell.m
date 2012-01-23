@@ -153,7 +153,8 @@
 #pragma mark Memory Management
 
 - (void)prepareForReuse {
-	[super prepareForReuse];	
+	[super prepareForReuse];
+	_reorderView.title = nil;
 }
 
 @end

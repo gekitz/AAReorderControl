@@ -27,12 +27,12 @@ or you apply a ``` AAReorderDrawRect drawRect ``` block to your reorder view to 
 
 Right now I'm working on scrolling support for the TableViews while you are dragging the AAReorderContentView.
 
-# Author
+## Author
 
 Georg Kitz
 You can follow me on Twitter [@gekitz](http://www.twitter.com/gekitz).
 
-# License 
+## License 
 
 This source code is available under MIT license. For details check the license file.
 

@@ -71,6 +71,10 @@ typedef enum {
 - (void)setTitle:(NSString *)title{
     _title = title;
     _flags.hasContent = ([_title length] > 0);
+    
+    if (!_flags.hasContent && _flags.editing) {
+        [_reorderControl removeFromSuperview];
+    }
 }
 
 - (void)setReorderDelegate:(id<ReorderDelegate>)reorderDelegate{

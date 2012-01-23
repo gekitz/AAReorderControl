@@ -93,11 +93,11 @@
 #pragma mark TableView DataSource Methods 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 50;
+    return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -106,8 +106,11 @@
     if (!cell) {
         cell = [[AAReorderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+   
     cell.textLabel.text = [NSString stringWithFormat:@"Row %d", indexPath.row];
-    cell.title = [NSString stringWithFormat:@"Reorder %d", indexPath.row];
+    if (_tableView1 == tableView) {
+         cell.title = [NSString stringWithFormat:@"Reorder %d", indexPath.row];   
+    }
     
     return cell;
 }
