@@ -123,7 +123,7 @@ typedef enum {
 
 - (BOOL)delegateWillEndEditing{
     if (_flags.delegateWillEndReordering) {
-        NSIndexPath *fromIndexPath = [_startTableView indexPathForCell:_startCell];
+        NSIndexPath *fromIndexPath = _startIndexPath;
         NSIndexPath *toIndexPath = [_lastTableView indexPathForCell:_lastCell];
         return [_delegate willEndReorideringForView:self fromIndexPath:fromIndexPath inTable:_startTableView toIndexPath:toIndexPath inTable:_lastTableView];
     }
@@ -134,7 +134,7 @@ typedef enum {
     if (_flags.delegateDidEndReordering) {
         UITableViewCell *cell = (_lastCell == nil) ? _startCell : _lastCell;
         
-        NSIndexPath *fromIndexPath = [_startTableView indexPathForCell:_startCell];
+        NSIndexPath *fromIndexPath = _startIndexPath;
         NSIndexPath *toIndexPath = [_lastTableView indexPathForCell:cell];
         
         [_delegate didEndReorderingForView:self fromIndexPath:fromIndexPath inTable:_startTableView toIndexPath:toIndexPath inTable:_lastTableView];
@@ -525,6 +525,8 @@ typedef enum {
         _startCell.reorderingView.showPlaceholderView = YES;
         _startCell.title = self.title;
         
+        _startIndexPath = _startCell.reorderingView.startIndexPath;
+        
         _baseRect = rect;
         _touchStart = [touch locationInView:self];
         
@@ -565,8 +567,9 @@ typedef enum {
     _lastTableView.scrollEnabled = YES;
     _startTableView.scrollEnabled = YES;
 
-    
-    if (_lastCell != nil && _lastCell != _startCell) {
+    NSIndexPath *indexPath = [_startTableView indexPathForCell:_startCell];
+    NSComparisonResult compare = [indexPath compare:_startCell.reorderingView.startIndexPath];
+    if ( _lastCell != nil && _lastCell != _startCell ) {
 
         CGRect animationFrame = _lastCell.reorderRect;
         CGRect frame = [_lastCell.contentView convertRect:animationFrame toView:self.superview];
@@ -581,14 +584,34 @@ typedef enum {
             [self removeFromSuperview];
             _lastCell.reorderingView = self;
             
-            NSIndexPath *indexPath = [_startTableView indexPathForCell:_startCell];
-            if ([indexPath compare:_startCell.reorderingView.startIndexPath] == NSOrderedSame) {
+            if (compare == NSOrderedSame) {
                 [_startCell.reorderingView removeFromSuperview];
                 _startCell.reorderingView = [[AAReorderContentView alloc] initWithFrame:CGRectZero];
                 _startCell.reorderingView.reorderDelegate = _delegate;
             } else {
                 _startCell.reorderingView.showPlaceholderView = NO;
             }
+            
+            [self delegateDidEndEditing];
+        }];
+        
+        return;
+    }
+    
+    if (_lastCell == _startCell && compare != NSOrderedSame) {
+        CGRect animationFrame = _lastCell.reorderRect;
+        CGRect frame = [_lastCell.contentView convertRect:animationFrame toView:self.superview];
+        
+        [UIView animateWithDuration:0.25 animations:^{
+            self.frame = frame;
+        } completion:^(BOOL finished) {
+            
+            [self removeFromSuperview];
+            [_lastCell.reorderingView removeFromSuperview];
+            
+            _lastCell.reorderingView = self;
+            _lastCell.reorderingView.showPlaceholderView = NO;
+            _lastCell.title = @"FUCK";
             
             [self delegateDidEndEditing];
         }];
