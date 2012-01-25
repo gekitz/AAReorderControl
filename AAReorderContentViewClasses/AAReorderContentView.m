@@ -457,8 +457,10 @@ typedef enum {
     }
     
     if (_flags.shouldShowPlaceholderView) {
+        
         NSIndexPath *indexPath = [_startTableView indexPathForCell:_startCell];
         if ([indexPath isEqual: _startIndexPath]) {
+            [_reorderControl removeFromSuperview];
             [_draggingPlaceholderColor set];
             [_title drawInRect:CGRectMake(0, CGRectGetHeight(self.frame) / 2 - 11, CGRectGetWidth(self.frame) - 34, 22) 
                       withFont:[UIFont systemFontOfSize:17] lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentRight];
@@ -569,7 +571,7 @@ typedef enum {
 
     NSIndexPath *indexPath = [_startTableView indexPathForCell:_startCell];
     NSComparisonResult compare = [indexPath compare:_startCell.reorderingView.startIndexPath];
-    if ( _lastCell != nil && _lastCell != _startCell ) {
+    if ((_lastCell != nil && _lastCell != _startCell) || (_lastCell == _startCell && compare != NSOrderedSame)) {
 
         CGRect animationFrame = _lastCell.reorderRect;
         CGRect frame = [_lastCell.contentView convertRect:animationFrame toView:self.superview];
@@ -591,27 +593,6 @@ typedef enum {
             } else {
                 _startCell.reorderingView.showPlaceholderView = NO;
             }
-            
-            [self delegateDidEndEditing];
-        }];
-        
-        return;
-    }
-    
-    if (_lastCell == _startCell && compare != NSOrderedSame) {
-        CGRect animationFrame = _lastCell.reorderRect;
-        CGRect frame = [_lastCell.contentView convertRect:animationFrame toView:self.superview];
-        
-        [UIView animateWithDuration:0.25 animations:^{
-            self.frame = frame;
-        } completion:^(BOOL finished) {
-            
-            [self removeFromSuperview];
-            [_lastCell.reorderingView removeFromSuperview];
-            
-            _lastCell.reorderingView = self;
-            _lastCell.reorderingView.showPlaceholderView = NO;
-            _lastCell.title = @"FUCK";
             
             [self delegateDidEndEditing];
         }];

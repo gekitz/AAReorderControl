@@ -126,7 +126,7 @@ typedef void(^AAReorderDrawRect)(CGRect);
 @end
 
 @protocol ReorderDelegate <NSObject>
-
+@optional
 /** allows reoder for a certain reoderview or not. Is called in touchesBegan: 
  @return YES/NO wether reordering is allowed or not, default is YES
  */
