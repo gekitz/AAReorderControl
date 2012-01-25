@@ -36,6 +36,14 @@ typedef enum {
                                         AAReorderCellCornerTypeRightBottom | AAReorderCellCornerTypeLeftBottom)
 }AAReorderCellCornerType;
 
+typedef enum {
+    AAReorderAutoScrollDirectionNone = 0,
+    AAReorderAutoScrollDirectionUp = 1,
+    AAReorderAutoScrollDirectionDown,
+    AAReorderAutoScrollDirectionLeft,
+    AAReorderAutoScrollDirectionRight
+}AAReorderAutoScrollDirection;
+
 @interface AAReorderContentView()
 
 - (BOOL)delegateWillBeginEditing;
@@ -49,7 +57,7 @@ typedef enum {
 
 - (void)drawRectHighlightWithCornerType:(AAReorderCellCornerType)cornerType;
 
-- (void)startAutoScrolling;
+- (void)startAutoScrollingWithDirection:(AAReorderAutoScrollDirection)direction;
 - (void)stopAutoScrolling;
 @end
 
@@ -64,6 +72,7 @@ typedef enum {
 @synthesize title = _title;
 @synthesize reorderDelegate = _delegate;
 @synthesize drawRect = _drawRect;
+@synthesize startIndexPath = _startIndexPath;
 
 @synthesize titleColor = _titleColor;
 @synthesize titleHighlightedColor = _titleHighlightedColor;
@@ -86,6 +95,14 @@ typedef enum {
     _flags.delegateDidBeginReordering = [_delegate respondsToSelector:@selector(didBeginReorderingForView:)];
     _flags.delegateWillEndReordering = [_delegate respondsToSelector:@selector(willEndReorideringForView:fromIndexPath:inTable:toIndexPath:inTable:)];
     _flags.delegateDidEndReordering = [_delegate respondsToSelector:@selector(didEndReorderingForView:fromIndexPath:inTable:toIndexPath:inTable:)];
+}
+
+- (void)setShowPlaceholderView:(BOOL)show{
+    _flags.shouldShowPlaceholderView = show;
+}
+
+- (BOOL)showPlaceholderView{
+    return _flags.shouldShowPlaceholderView;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,62 +208,74 @@ typedef enum {
 }
 
 - (void)setupPlaceholderView{
-    AAPlaceholderReorderView *placeholderView = [[AAPlaceholderReorderView alloc] initWithFrame:self.frame];
-    placeholderView.title = self.title;
-    placeholderView.color = _draggingPlaceholderColor;
-    [self.superview insertSubview:placeholderView belowSubview:self];
     
-    _startPlaceholderView = placeholderView;
+    if (!_startPlaceholderView) {
+        AAPlaceholderReorderView *placeholderView = [[AAPlaceholderReorderView alloc] initWithFrame:self.frame];
+        placeholderView.title = self.title;
+        placeholderView.color = _draggingPlaceholderColor;
+        [self.superview insertSubview:placeholderView aboveSubview:self];
+        _startPlaceholderView = placeholderView;
+        
+        [_startPlaceholderView setNeedsDisplay];
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark AutoScrolling Methods 
 
-//- (void)autoscroll:(NSTimer *)timer{
-//    
-//    if (!_flags.shouldAutoScroll || _flags.isAnimating) {
-//        return;
-//    }
-//    
-//    CGPoint point = _scrollView.contentOffset;
-//    point.x += (_autoScrollValue * 320);
-//    
-//    if (point.x + CGRectGetWidth(_scrollView.frame) > _scrollView.contentSize.width || point.x < 0) {
-//        _flags.shouldAutoScroll = NO;
-//        return;
-//    }
-//    
-//    _flags.isAnimating = YES;
-//    _flags.shouldAutoScroll = NO;
-//    
-//    [UIView animateWithDuration:0.25 animations:^{
-//        [_scrollView setContentOffset:point animated:NO];
-//    } completion:^(BOOL finished) {
-//        _flags.isAnimating = NO;
-//    }];
-//    
-//    [self findTableViewAtPoint:CGPointMake(point.x, 160) inView:_scrollView];
-//    [self findCurrentAtPoint:self.center];
-//}
-
-
-- (void)internalShouldAutoScroll{
+- (void)internalShouldAutoScroll:(NSTimer *)timer{
     if (!_flags.shouldAutoScroll){
+        [timer invalidate];
         return;
     }
     
-    [_lastTableView setContentOffset:CGPointMake(0,_lastTableView.contentOffset.y + 1) animated:YES];
-    [self performSelectorOnMainThread:@selector(internalShouldAutoScroll) withObject:nil waitUntilDone:NO];
+    AAReorderAutoScrollDirection direction = [[[timer userInfo] objectForKey:@"aa.auto.scroll.direction.item"] integerValue];
+    NSInteger delta = direction == AAReorderAutoScrollDirectionDown ? 1 : -1;
+    NSInteger yValue = _lastTableView.contentOffset.y + delta;
+    
+    if (yValue < 0 || yValue + CGRectGetHeight(_lastTableView.frame) > _lastTableView.contentSize.height) {
+        _flags.shouldAutoScroll = NO;
+        return;
+    }
+    
+    [_lastTableView setContentOffset:CGPointMake(0,yValue) animated:NO];  
 }
 
-- (void)startAutoScrolling{
+- (void)startAutoScrollingWithDirection:(AAReorderAutoScrollDirection)direction{
     _flags.shouldAutoScroll = YES;
-    [self performSelectorOnMainThread:@selector(internalShouldAutoScroll) withObject:nil waitUntilDone:NO];
+    _flags.autoscrollDirection = direction;
+    
+    NSDictionary *dict = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:direction] forKey:@"aa.auto.scroll.direction.item"];
+    [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(internalShouldAutoScroll:) userInfo:dict repeats:YES];
 }
 
 - (void)stopAutoScrolling{
     _flags.shouldAutoScroll = NO;
+}
+
+- (void)autoScrollUpOrDown{
+    CGRect autoScrollingRect = CGRectMake(CGRectGetMinX(_lastTableView.frame), 
+                                          CGRectGetMaxY(_lastTableView.frame) - _lastTableView.rowHeight, 
+                                          CGRectGetWidth(_lastTableView.frame), _lastTableView.rowHeight / 2);
+    
+    if (CGRectIntersectsRect(self.frame, autoScrollingRect) && !_flags.shouldAutoScroll) {
+        [self startAutoScrollingWithDirection:AAReorderAutoScrollDirectionDown];
+    } else if(!CGRectIntersectsRect(self.frame, autoScrollingRect) && _flags.shouldAutoScroll && 
+              _flags.autoscrollDirection == AAReorderAutoScrollDirectionDown){
+        [self stopAutoScrolling];
+    }
+    
+    autoScrollingRect = CGRectMake(CGRectGetMinX(_lastTableView.frame), 
+                                   CGRectGetMinY(_lastTableView.frame), 
+                                   CGRectGetWidth(_lastTableView.frame), 
+                                   _lastTableView.rowHeight / 2);
+    
+    if (CGRectIntersectsRect(self.frame, autoScrollingRect) && !_flags.shouldAutoScroll) {
+        [self startAutoScrollingWithDirection:AAReorderAutoScrollDirectionUp];
+    } else if (!CGRectIntersectsRect(self.frame, autoScrollingRect) && _flags.shouldAutoScroll && _flags.autoscrollDirection == AAReorderAutoScrollDirectionUp){
+        [self stopAutoScrolling];
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -288,7 +317,7 @@ typedef enum {
         self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor clearColor];
         
-        _reorderControl = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(frame) - 30, 0, 30, CGRectGetHeight(frame))];
+        _reorderControl = [[UIImageView alloc] initWithFrame:CGRectZero];
         _reorderControl.image = [UIImage imageNamed:@"reorder_handle"];
         _reorderControl.contentMode = UIViewContentModeCenter;
         
@@ -416,6 +445,11 @@ typedef enum {
     CGContextDrawPath(ctx, kCGPathFillStroke);
 }
 
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    _reorderControl.frame = CGRectMake(CGRectGetWidth(self.frame) - 30, 0, 30, CGRectGetHeight(self.frame));
+}
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
@@ -424,12 +458,22 @@ typedef enum {
         _drawRect(rect);
         return;
     }
+    
+    if (_startTableView == nil) {
+        [self tableSuperview];
+    }
+    
+    if (_flags.shouldShowPlaceholderView) {
+        NSIndexPath *indexPath = [_startTableView indexPathForCell:_startCell];
+        if ([indexPath isEqual: _startIndexPath]) {
+            [[UIColor yellowColor] set];
+            [_title drawInRect:CGRectMake(0, CGRectGetHeight(self.frame) / 2 - 11, CGRectGetWidth(self.frame) - 34, 22) 
+                      withFont:[UIFont systemFontOfSize:17] lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentRight];
+            return;
+        }
+    }
         
     if (_flags.dragOverHighlighting) {
-        
-        if (_startTableView == nil) {
-            [self tableSuperview];
-        }
         
         NSIndexPath *indexPath = [_startTableView indexPathForCell:_startCell];
         NSInteger numberOfRows = [_startTableView numberOfRowsInSection:0];
@@ -478,12 +522,15 @@ typedef enum {
         UIView *superView = [self tableSuperview];
         [_startTableView setScrollEnabled:NO];
         
-        //Add Placeholder View
-        [self setupPlaceholderView];
-        
         CGRect rect = [self.superview convertRect:self.frame toView:superView];
         self.frame = rect;
         [superView addSubview:self];
+        
+        _startCell.reorderingView = [[AAReorderContentView alloc] initWithFrame:CGRectZero];
+        _startCell.reorderingView.reorderDelegate = _delegate ;
+        _startCell.reorderingView.startIndexPath = [_startTableView indexPathForCell:_startCell];
+        _startCell.reorderingView.showPlaceholderView = YES;
+        _startCell.title = self.title;
         
         _baseRect = rect;
         _touchStart = [touch locationInView:self];
@@ -507,15 +554,7 @@ typedef enum {
         point = [[touches anyObject] locationInView:_lastTableView];
         [self updateCurrentCellAtPoint:point];
         
-        CGRect autoScrollingRect = CGRectMake(CGRectGetMinX(_lastTableView.frame), CGRectGetMaxY(_lastTableView.frame) - _lastTableView.rowHeight, CGRectGetWidth(_lastTableView.frame), _lastTableView.rowHeight);
-        
-
-        if (CGRectIntersectsRect(self.frame, autoScrollingRect) && !_flags.shouldAutoScroll) {
-            SMLog(@"INTERSECT");
-            [self startAutoScrolling];
-        } else if(!CGRectIntersectsRect(self.frame, autoScrollingRect) && _flags.shouldAutoScroll){
-            [self stopAutoScrolling];
-        }
+        [self autoScrollUpOrDown];
     } 
 }
 
@@ -529,7 +568,10 @@ typedef enum {
     _flags.dragHighlighting = NO;
     _flags.dragOverHighlighting = NO;
     _flags.reorderingTapped = NO;
-    _lastTableView.scrollEnabled = _startTableView.scrollEnabled = YES;
+    _flags.shouldAutoScroll = NO;
+    
+    _lastTableView.scrollEnabled = YES;
+    _startTableView.scrollEnabled = YES;
     
     if (_lastCell != nil && _lastCell != _startCell) {
 
@@ -546,12 +588,11 @@ typedef enum {
             [self removeFromSuperview];
             _lastCell.reorderingView = self;
             
+            [_startCell.reorderingView removeFromSuperview];
             _startCell.reorderingView = [[AAReorderContentView alloc] initWithFrame:CGRectZero];
-            _startCell.reorderingView.reorderDelegate = _delegate ;
+            _startCell.reorderingView.reorderDelegate = _delegate;
             
             [self delegateDidEndEditing];
-            
-            [_startPlaceholderView removeFromSuperview];
         }];
         
         return;

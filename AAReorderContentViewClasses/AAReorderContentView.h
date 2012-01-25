@@ -64,10 +64,10 @@ typedef void(^AAReorderDrawRect)(CGRect);
     AAReorderCell *_startCell;
     AAReorderCell *_lastCell;
     
+    NSIndexPath *_startIndexPath;
+    
     CGPoint _touchStart;
     CGRect _baseRect;
-    
-    NSInteger _autoScrollValue;
     
     struct {
         unsigned int hasContent:1;                      //title length != 0
@@ -82,7 +82,9 @@ typedef void(^AAReorderDrawRect)(CGRect);
         unsigned int highlighted:1;
         unsigned int selected:1;
         unsigned int shouldAutoScroll:1;
+        unsigned int autoscrollDirection:3;
         unsigned int isAnimating:1;
+        unsigned int shouldShowPlaceholderView:1;
     }_flags;
     
     //Properties
@@ -105,6 +107,9 @@ typedef void(^AAReorderDrawRect)(CGRect);
 
 /** to override the current drawRect just set this block */
 @property (nonatomic, strong) AAReorderDrawRect drawRect;
+
+@property (nonatomic, strong) NSIndexPath *startIndexPath; 
+@property (nonatomic, assign) BOOL showPlaceholderView;
 
 /** Style properties */
 @property (nonatomic, strong) UIColor *titleColor;
