@@ -23,7 +23,6 @@
 //    SOFTWARE.
 
 #import "AAReorderContentView.h"
-#import "AAPlaceholderReorderView.h"
 #import "AAReorderCell.h"
 
 typedef enum {
@@ -161,6 +160,10 @@ typedef enum {
 
 - (void)updateCurrentTableViewAtPoint:(CGPoint)point inView:(UIView *)view{
     
+    if (_flags.shouldAutoScroll) {
+        return;
+    }
+    
     for (UIView *subview in view.subviews) {
         if ([subview isKindOfClass:[UITableView class]]) {
             
@@ -168,12 +171,14 @@ typedef enum {
             if (CGRectContainsPoint(frame, point)){
                 
                 if (_lastTableView == subview) {
-                    continue;
+                    return;
                 }
                 
                 _lastTableView.scrollEnabled = YES;
                 _lastTableView = (UITableView *)subview;
                 _lastTableView.scrollEnabled = NO;
+                
+                SMLog(@"%@ LAST %d CURRENT %d",NSStringFromSelector(_cmd), _lastTableView.scrollEnabled, _startTableView.scrollEnabled);
                 
                 return;
             }
@@ -196,8 +201,9 @@ typedef enum {
             isTableView = YES;
             
             _startTableView = (UITableView *)view;
-            _startTableView.scrollEnabled = NO;
             _lastTableView = _startTableView;
+            
+            SMLog(@"%@ LAST %d CURRENT %d",NSStringFromSelector(_cmd), _lastTableView.scrollEnabled, _startTableView.scrollEnabled);
         }
     }
     
@@ -205,19 +211,6 @@ typedef enum {
         return [view superview];
     }
     return nil;
-}
-
-- (void)setupPlaceholderView{
-    
-    if (!_startPlaceholderView) {
-        AAPlaceholderReorderView *placeholderView = [[AAPlaceholderReorderView alloc] initWithFrame:self.frame];
-        placeholderView.title = self.title;
-        placeholderView.color = _draggingPlaceholderColor;
-        [self.superview insertSubview:placeholderView aboveSubview:self];
-        _startPlaceholderView = placeholderView;
-        
-        [_startPlaceholderView setNeedsDisplay];
-    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -466,7 +459,7 @@ typedef enum {
     if (_flags.shouldShowPlaceholderView) {
         NSIndexPath *indexPath = [_startTableView indexPathForCell:_startCell];
         if ([indexPath isEqual: _startIndexPath]) {
-            [[UIColor yellowColor] set];
+            [_draggingPlaceholderColor set];
             [_title drawInRect:CGRectMake(0, CGRectGetHeight(self.frame) / 2 - 11, CGRectGetWidth(self.frame) - 34, 22) 
                       withFont:[UIFont systemFontOfSize:17] lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentRight];
             return;
@@ -569,9 +562,9 @@ typedef enum {
     _flags.dragOverHighlighting = NO;
     _flags.reorderingTapped = NO;
     _flags.shouldAutoScroll = NO;
-    
     _lastTableView.scrollEnabled = YES;
     _startTableView.scrollEnabled = YES;
+
     
     if (_lastCell != nil && _lastCell != _startCell) {
 
@@ -588,9 +581,14 @@ typedef enum {
             [self removeFromSuperview];
             _lastCell.reorderingView = self;
             
-            [_startCell.reorderingView removeFromSuperview];
-            _startCell.reorderingView = [[AAReorderContentView alloc] initWithFrame:CGRectZero];
-            _startCell.reorderingView.reorderDelegate = _delegate;
+            NSIndexPath *indexPath = [_startTableView indexPathForCell:_startCell];
+            if ([indexPath compare:_startCell.reorderingView.startIndexPath] == NSOrderedSame) {
+                [_startCell.reorderingView removeFromSuperview];
+                _startCell.reorderingView = [[AAReorderContentView alloc] initWithFrame:CGRectZero];
+                _startCell.reorderingView.reorderDelegate = _delegate;
+            } else {
+                _startCell.reorderingView.showPlaceholderView = NO;
+            }
             
             [self delegateDidEndEditing];
         }];
