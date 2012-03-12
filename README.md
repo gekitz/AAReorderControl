@@ -7,7 +7,6 @@ Short [Demo Video](http://vimeo.com/35507673).
 ## Important Facts
 
 - Both UITableViews **must** have the same superview.
-- Both UITableViews must be visible with its complete content (scrolling inside a Tableview while dragging is not support at the moment).
 
 ## Setup
 

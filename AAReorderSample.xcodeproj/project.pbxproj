@@ -22,7 +22,6 @@
 		C122536714CAF9C800869FA2 /* FirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C122536514CAF9C800869FA2 /* FirstViewController.xib */; };
 		C122536A14CAF9C800869FA2 /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C122536814CAF9C800869FA2 /* SecondViewController.xib */; };
 		C122537314CAFA1C00869FA2 /* AAReorderContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = C122537214CAFA1C00869FA2 /* AAReorderContentView.m */; };
-		C122537614CAFB3100869FA2 /* AAPlaceholderReorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C122537514CAFB3100869FA2 /* AAPlaceholderReorderView.m */; };
 		C122537914CAFC4E00869FA2 /* AAReorderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C122537814CAFC4E00869FA2 /* AAReorderCell.m */; };
 		C122537D14CB074E00869FA2 /* reorder_handle.png in Resources */ = {isa = PBXBuildFile; fileRef = C122537B14CB074E00869FA2 /* reorder_handle.png */; };
 		C122537E14CB074E00869FA2 /* reorder_handle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C122537C14CB074E00869FA2 /* reorder_handle@2x.png */; };
@@ -49,12 +48,10 @@
 		C122536314CAF9C800869FA2 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		C122536614CAF9C800869FA2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FirstViewController.xib; sourceTree = "<group>"; };
 		C122536914CAF9C800869FA2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SecondViewController.xib; sourceTree = "<group>"; };
-		C122537114CAFA1C00869FA2 /* AAReorderContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; name = AAReorderContentView.h; path = AAReorderContentViewClasses/AAReorderContentView.h; sourceTree = "<group>"; };
-		C122537214CAFA1C00869FA2 /* AAReorderContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; name = AAReorderContentView.m; path = AAReorderContentViewClasses/AAReorderContentView.m; sourceTree = "<group>"; };
-		C122537414CAFB3100869FA2 /* AAPlaceholderReorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; name = AAPlaceholderReorderView.h; path = AAReorderContentViewClasses/AAPlaceholderReorderView.h; sourceTree = "<group>"; };
-		C122537514CAFB3100869FA2 /* AAPlaceholderReorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; name = AAPlaceholderReorderView.m; path = AAReorderContentViewClasses/AAPlaceholderReorderView.m; sourceTree = "<group>"; };
+		C122537114CAFA1C00869FA2 /* AAReorderContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AAReorderContentView.h; path = AAReorderContentViewClasses/AAReorderContentView.h; sourceTree = "<group>"; };
+		C122537214CAFA1C00869FA2 /* AAReorderContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AAReorderContentView.m; path = AAReorderContentViewClasses/AAReorderContentView.m; sourceTree = "<group>"; };
 		C122537714CAFC4E00869FA2 /* AAReorderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AAReorderCell.h; path = AAReorderContentViewClasses/AAReorderCell.h; sourceTree = "<group>"; };
-		C122537814CAFC4E00869FA2 /* AAReorderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; name = AAReorderCell.m; path = AAReorderContentViewClasses/AAReorderCell.m; sourceTree = "<group>"; };
+		C122537814CAFC4E00869FA2 /* AAReorderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AAReorderCell.m; path = AAReorderContentViewClasses/AAReorderCell.m; sourceTree = "<group>"; };
 		C122537B14CB074E00869FA2 /* reorder_handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = reorder_handle.png; path = AAReorderContentViewClasses/Images/reorder_handle.png; sourceTree = "<group>"; };
 		C122537C14CB074E00869FA2 /* reorder_handle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reorder_handle@2x.png"; path = "AAReorderContentViewClasses/Images/reorder_handle@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -138,8 +135,6 @@
 				C122537A14CB073600869FA2 /* Images */,
 				C122537714CAFC4E00869FA2 /* AAReorderCell.h */,
 				C122537814CAFC4E00869FA2 /* AAReorderCell.m */,
-				C122537414CAFB3100869FA2 /* AAPlaceholderReorderView.h */,
-				C122537514CAFB3100869FA2 /* AAPlaceholderReorderView.m */,
 				C122537114CAFA1C00869FA2 /* AAReorderContentView.h */,
 				C122537214CAFA1C00869FA2 /* AAReorderContentView.m */,
 			);
@@ -229,7 +224,6 @@
 				C122535914CAF9C800869FA2 /* FirstViewController.m in Sources */,
 				C122536014CAF9C800869FA2 /* SecondViewController.m in Sources */,
 				C122537314CAFA1C00869FA2 /* AAReorderContentView.m in Sources */,
-				C122537614CAFB3100869FA2 /* AAPlaceholderReorderView.m in Sources */,
 				C122537914CAFC4E00869FA2 /* AAReorderCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

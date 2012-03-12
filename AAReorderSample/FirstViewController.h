@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AAReorderContentView.h"
 
-@interface FirstViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>{
+@interface FirstViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ReorderDelegate>{
     UITableView *_tableView1;
     UITableView *_tableView2;
+    
+    NSMutableArray *_data1;
+    NSMutableArray *_data2;
 }
 
 @end

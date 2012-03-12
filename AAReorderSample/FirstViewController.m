@@ -45,6 +45,14 @@
     
     self.title = @"Controller 1";
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    _data1 = [NSMutableArray array];
+    _data2 = [NSMutableArray array];
+    
+    for (NSInteger count = 0; count < 50; count++) {
+        [_data1 addObject:[NSString stringWithFormat:@"Row %d", count]];
+        [_data2 addObject:@""];
+    }
 }
 
 - (void)viewDidUnload
@@ -97,7 +105,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    return [_data1 count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -105,14 +113,40 @@
     AAReorderCell *cell = (AAReorderCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[AAReorderCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell.reorderDelegate = self;
     }
    
     cell.textLabel.text = [NSString stringWithFormat:@"Row %d", indexPath.row];
     if (_tableView1 == tableView) {
-         cell.title = [NSString stringWithFormat:@"Reorder %d", indexPath.row];   
+         cell.title = [_data1 objectAtIndex: indexPath.row];   
+    } else {
+         cell.title = [_data2 objectAtIndex: indexPath.row];           
     }
     
     return cell;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark ReorderDelegate Methods 
+
+- (void)didEndReorderingForView:(AAReorderContentView *)view 
+                  fromIndexPath:(NSIndexPath *)fromIndexPath inTable:(UITableView *)fromTableView 
+                    toIndexPath:(NSIndexPath *)toIndexPath inTable:(UITableView *)toTableView{
+    
+    NSMutableArray *fromArray = (fromTableView == _tableView1) ? _data1 : _data2;
+    NSMutableArray *toArray = (toTableView == _tableView1) ? _data1 : _data2;
+    
+    NSString *value = [fromArray objectAtIndex:fromIndexPath.row];
+    
+    [fromArray removeObjectAtIndex:fromIndexPath.row];
+    [fromArray insertObject:@"" atIndex:fromIndexPath.row];
+    
+    [toArray removeObjectAtIndex:toIndexPath.row];
+    [toArray insertObject:value atIndex:toIndexPath.row];
+    
+    [_tableView1 reloadData];
+    [_tableView2 reloadData];
 }
 
 @end
